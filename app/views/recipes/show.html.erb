@@ -5,11 +5,33 @@
     <% end %>
 
     <%= render @recipe %>
+    <% if @recipe.content.present? %>
+      <div class="prose max-w-none my-5">
+        <%= @recipe.content.to_s %>
+      </div>
+    <% end %>
+
+    <div class="my-5">
+      <h3 class="font-bold text-xl">Ingredients</h3>
+
+      <% if @recipe.ingredients.count >= 3 %>
+        <p class="text-red-500 font-medium">You cannot add more than 3 ingredients to this recipe.</p>
+      <% else %>
+        <%= render "ingredients/form", recipe: @recipe, ingredient: @ingredient %>
+      <% end %>
+
+      <%- @recipe.ingredients.each do |ingredient| %>
+        <%= render ingredient %>
+      <% end %>
+    </div>
 
     <%= link_to 'Edit this recipe', edit_recipe_path(@recipe), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    
     <div class="inline-block ml-2">
       <%= button_to 'Destroy this recipe', recipe_path(@recipe), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
     </div>
+    
     <%= link_to 'Back to recipes', recipes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 </div>
+	
